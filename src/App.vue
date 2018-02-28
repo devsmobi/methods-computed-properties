@@ -5,8 +5,8 @@
         <p class="lead">
             Products
         </p>
-        <filter-component></filter-component>
-        <items-component></items-component>
+        <filter-component @query="getQuery($event)" @direction="getDirection($event)"></filter-component>
+        <items-component :search-query="searchQuery" :order-direction="orderDirection"></items-component>
     </div>
   </div>
 </div>
@@ -24,12 +24,17 @@ export default {
   },
   data () {
     return {
-      
+      searchQuery: '',
+      orderDirection: ''
+    }
+  },
+  methods: {
+    getQuery: function(string) {
+      this.searchQuery = string
+    },
+    getDirection: function(string) {
+      this.orderDirection = string
     }
   }
 }
 </script>
-
-<style>
-
-</style>

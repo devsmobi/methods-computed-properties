@@ -2,7 +2,7 @@
     <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" v-for="product in filteredAndSortedItems">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ product.name | uppercase }}</h5>
+                <h5 class="mb-1">{{ product.name }}</h5>
             </div>
             <p class="mb-1">{{ product.description }}</p>
             <table class="table">
@@ -17,7 +17,7 @@
                     <tr v-for="option in product.options">
                         <td>{{ option.id }}</td>
                         <td>{{ option.details }}</td>
-                        <td>{{ option.price | currency }}</td>
+                        <td>{{ option.price }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -29,9 +29,9 @@
 
 export default {
     name: 'items-component',
+    props: ['search-query', 'order-direction'],
     data () {
         return {
-            order: 'desc',
             products: [
                 {
                     'name': 'USB Stick',
@@ -132,19 +132,16 @@ export default {
     },
     computed: {
         filteredAndSortedItems: function() {
-            var self = this
+            let that = this
+            let result = this.products
 
             // Apply filter first if a search value has been entered
-            let result = self.products
-            if(this.search)
-            {
-                result = result.filter(function(product) {
-                    return product.name.indexOf(self.search) !== -1
-                })
-            }
+            result = result.filter(function(product) {
+                return product.name.indexOf(that.searchQuery) !== -1
+            })
 
             // Sort the remaining values
-            return _.orderBy(result, ['name'], [this.order])
+            return _.orderBy(result, ['name'], [this.orderDirection])
         }
     }
 }
